@@ -10,7 +10,7 @@ Get-Content ~\.ssh\id_ed25519.pub
 apt update
 apt install -y openssh-server
 mkdir -p /run/sshd
-/usr/run.sshd
+/usr/run.sshd or /usr/sbin/sshd
 
 mkdir -p ~/.ssh
 chmod 700 ~/.ssh
