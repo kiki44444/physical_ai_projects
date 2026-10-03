@@ -1,5 +1,45 @@
 # physical_ai_projects
+### vscode + SSH
+1. install remote SSH extension
+2. public key of mine
+```
+Get-Content ~\.ssh\id_ed25519.pub
+```
+3. code
+```bash
+apt update
+apt install -y openssh-server
+mkdir -p /run/sshd
+/usr/run.sshd
 
+mkdir -p ~/.ssh
+chmod 700 ~/.ssh
+echo 'YOUR_PUBLIC_KEY' >> ~/.ssh/authorized_keys
+# type your public key
+chmod 600 ~/.ssh/authorized_keys
+```
+4. vscode config
+```
+remote-SSH config file
+
+Host runpod
+    HostName {HOST_IP}
+    User root
+    Port {PORT}
+    IdentityFile ~/.ssh/id_ed25519
+    
+ssh runpod # through terminal
+Remote-SSH -> Connect to Host -> runpod # through vscode
+```
+### Git SSH
+public key
+- generate a private/public key on the remote server
+```
+ssh-keygen -t ed25519 -C "{github_email}"
+cat ~/.ssh/id_ed25519.pub
+```
+- add this public key on github
+- ssh -T {github_email}
 # project #1: isaac-sim-learning
 ## cloud GPU: Runpod
 Create runpod server
