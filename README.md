@@ -40,6 +40,71 @@ cat ~/.ssh/id_ed25519.pub
 ```
 - add this public key on github
 - ssh -T {github_email}
+
+## ROS2 install
+Ubuntu 22.04 Jammy
+Isaac Sim 4.0 
+ROS 2 Humble + Ubuntu 22.04 based on NVIDIA doc
+```
+apt update
+apt install -y locales software-properties-common curl
+
+locale-gen en_US en_US.UTF-8
+update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
+export LANG=en_US.UTF-8
+
+add-apt-repository universe
+
+apt update
+apt install -y curl
+
+curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key \
+  -o /usr/share/keyrings/ros-archive-keyring.gpg
+
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" \
+  > /etc/apt/sources.list.d/ros2.list
+
+# ROS humble
+apt update
+apt upgrade -y
+
+apt install -y ros-humble-desktop
+apt install -y \
+    python3-colcon-common-extensions \
+    python3-rosdep \
+    build-essential
+
+source /opt/ros/humble/setup.bash
+ros2 --help
+printenv ROS_DISTRO
+```
+
+```
+mkdir -p ~/ros2_ws/src
+cd ~/ros2_ws/src
+ros2 pkg create robot_control --build-type ament_python --dependencies rclpy sensor_msgs
+```
+```
+# colcon install
+apt update
+apt install -y python3-colcon-common-extensions
+colcon --help
+```
+ROS workspace
+```
+source /opt/ros/humble/setup.bash
+cd ~/ros2_ws
+source install/setup.bash
+
+/opt/ros/humble/setup.bash
+        ↓
+ROS2 Humble 자체를 사용할 수 있게 함
+
+~/ros2_ws/install/setup.bash
+        ↓
+네가 만든 robot_control 같은 패키지를
+ROS2가 찾을 수 있게 함
+```
 # project #1: isaac-sim-learning
 ## cloud GPU: Runpod
 Create runpod server
@@ -57,8 +122,8 @@ Create runpod server
 5. If you accidently exit the simulator in the server then, ```./isaac-sim.sh --allow-root```
 
 ## Franka pandas
-1. Franka + ground plane + cube
-2. stardalone python script (/workspace/main.py)
+### 1. Franka + ground plane + cube
+### 2. stardalone python script (/workspace/main.py)
 - vi installation
 ```bash
 apt update
@@ -76,7 +141,7 @@ echo $DISPLAY
 # result :1
 /isaac-sim/python.sh /workspace/main.py
 ```
-3. Reading the current joint position
+### 3. Reading the current joint position
 - read_joint.py
 ```python
 franka.get_joint_positions()
@@ -92,7 +157,7 @@ Joint positions:
 ```
 - dof: degree of freedom
 - units: joint = radian, finger_joing = m
-4. Move the joint position (Joint space)
+### 4. Move the joint position (Joint space)
 ```python
 # move the joints
 from omni.isaac.core.utils.types import ArticulationAction
@@ -110,7 +175,7 @@ Actual: [-4.3578058e-12 -4.9997920e-01  3.6331871e-10 -2.0000052e+00
  -5.4580335e-07  1.5000017e+00  7.0000052e-01  3.9779279e-02
   3.9779294e-02]
 ```
-5. Cartesian space + IK solver
+### 5. Cartesian space + IK solver
 - move_cartesian_01.py
 ```python
 from omni.isaac.franka import KinematicsSolver
@@ -175,7 +240,7 @@ Joint position: [ 0.16466147 -0.7054785   0.28579456 -2.478773    0.05316455  2.
 Gripper position: [0.37350965 0.20253271 0.53297734]
 ```
 
-6. Pick-and-place
+### 6. Pick-and-place
 - 05_pick_and_place.py
 - output
 ```
@@ -201,4 +266,49 @@ retreat
 Target: [0.4   0.3   0.325]
 Actual: [0.36543915 0.32712418 0.36237168]
 final cube position: [4.9999970e-01 4.2551530e-08 2.4999926e-02]
+```
+## ROS2
+### 1. publish
+- 06_ros2_publish.py
+- How to execute
+  ```bash
+  source /opt/ros/humble/setup.bash
+  export RMW_IMPLEMENTATION=rmw_fastrtps_cpp
+  export ROS_DOMAIN_ID=0
+  /isaac-sim/python.sh 06_ros2.py
+  ```
+### 2. Subscribe
+```
+source /opt/ros/humble/setup.bash
+export RMW_IMPLEMENTATION=rmw_fastrtps_cpp
+export ROS_DOMAIN_ID=0
+ros2 topic list
+ros2 topic echo /joint_states
+```
+
+### 3. command
+- 07_ros2_command.py
+- How to execute
+- ```
+  source /opt/ros/humble/setup.bash
+  export RMW_IMPLEMENTATION=rmw_fastrtps_cpp
+  export ROS_DOMAIN_ID=0
+  /isaac-sim/python.sh 06_ros2.py
+  ```
+- output
+```
+Current joints: [ 0.012  -0.57    0.     -2.81    0.      3.037   0.741   0.0076  0.0076]
+Current joints: [ 0.012  -0.57    0.     -2.81    0.      3.037   0.741   0.0076  0.0076]
+```
+- Send command
+```
+source /opt/ros/humble/setup.bash
+export RMW_IMPLEMENTATION=rmw_fastrtps_cpp
+export ROS_DOMAIN_ID=0
+
+ros2 topic pub --once /joint_command sensor_msgs/msg/JointState "{position: [0.0, -0.5, 0.2, 0.3, 1.0, 1.5, 0.8, 0.04, 0.04]}"
+```
+- output
+```
+Current joints: [-0.   -0.5   0.2   0.3   1.    1.5   0.8   0.04  0.04]
 ```
