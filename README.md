@@ -3,7 +3,11 @@
 1. install remote SSH extension
 2. public key of mine
 ```
+# Windows
 Get-Content ~\.ssh\id_ed25519.pub
+
+# mac
+cat ~/.ssh/id_ed25519.pub
 ```
 3. code
 ```bash
