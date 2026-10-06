@@ -316,3 +316,130 @@ ros2 topic pub --once /joint_command sensor_msgs/msg/JointState "{position: [0.0
 ```
 Current joints: [-0.   -0.5   0.2   0.3   1.    1.5   0.8   0.04  0.04]
 ```
+### 4. pick a cube and place it in the target
+- tasks/pick_place.py
+- trouble shooting
+  - calibration problem
+- output
+```
+==========================================
+TASK A — PICK & PLACE
+==========================================
+Requested orientation: [0. 0. 1. 0.]
+EE prim: /World/Franka/panda_rightfinger
+Cube start: [0.5   0.    0.025]
+Target: [0.4   0.3   0.025]
+Calibrated grasp Z: 0.025
+==========================================
+
+[0] OPEN GRIPPER
+Finger separation: 0.0800 m
+
+[1] PRE-GRASP
+  RMPFlow target: [0.5 0.  0.2]
+  Gripper center: [0.4999 0.     0.2417]
+  XY error: 0.0001 m
+
+[2] DESCEND
+  RMPFlow target: [0.5   0.    0.025]
+  Gripper center: [ 0.5    -0.      0.0667]
+  XY error: 0.0000 m
+
+------------------------------------------
+BEFORE GRASP
+Cube: [0.5   0.    0.025]
+Gripper center: [ 0.5    -0.      0.0667]
+Finger separation: 0.0800 m
+Center - cube: [-0.     -0.      0.0417]
+------------------------------------------
+
+[3] CLOSE GRIPPER
+
+------------------------------------------
+AFTER GRASP
+Cube: [0.5   0.    0.025]
+Gripper center: [0.5    0.     0.0667]
+Finger separation: 0.0506 m
+Center - cube: [-0.      0.      0.0417]
+------------------------------------------
+
+Closed finger separation: 0.0506 m
+
+[4] LIFT
+  RMPFlow target: [0.5  0.   0.25]
+  Gripper center: [ 4.999e-01 -2.000e-04  2.917e-01]
+  XY error: 0.0003 m
+Cube before lift: [0.5   0.    0.025]
+Cube after lift: [ 4.999e-01 -4.000e-04  2.500e-01]
+Vertical lift: 0.2250 m
+
+>>> GRASP CONFIRMED <<<
+
+==========================================
+MEASURED GRASP OFFSET
+==========================================
+Gripper center: [ 4.999e-01 -2.000e-04  2.917e-01]
+Cube: [ 4.999e-01 -4.000e-04  2.500e-01]
+Cube - gripper: [ 1.00e-04 -1.00e-04 -4.17e-02]
+==========================================
+
+[5] MOVE ABOVE TARGET
+  RMPFlow target: [0.4  0.3  0.25]
+  Gripper center: [0.3965 0.3043 0.2917]
+  XY error: 0.0055 m
+
+------------------------------------------
+ABOVE TARGET
+Cube: [0.3966 0.3042 0.2499]
+Gripper center: [0.3965 0.3043 0.2917]
+Finger separation: 0.0506 m
+Center - cube: [-0.00e+00  1.00e-04  4.17e-02]
+------------------------------------------
+
+
+==========================================
+PLACE HEIGHT CALCULATION
+==========================================
+Controller → center Z offset: 0.0417 m
+Cube → gripper relative Z: -0.0417 m
+Desired cube center Z: 0.0250 m
+Desired gripper center Z: 0.0667 m
+Calculated RMPFlow place Z: 0.0251 m
+==========================================
+
+[6] LOWER TO PLACE
+  RMPFlow target: [0.4    0.3    0.0251]
+  Gripper center: [0.4    0.3    0.0668]
+  XY error: 0.0000 m
+
+------------------------------------------
+BEFORE RELEASE
+Cube: [0.4    0.2997 0.0251]
+Gripper center: [0.4    0.3    0.0668]
+Finger separation: 0.0506 m
+Center - cube: [-0.      0.0002  0.0417]
+------------------------------------------
+
+[7] RELEASE
+Cube after release: [0.4    0.2997 0.0251]
+
+[8] RETREAT
+  RMPFlow target: [0.4  0.3  0.25]
+  Gripper center: [0.3965 0.3044 0.2917]
+  XY error: 0.0056 m
+
+
+==========================================
+TASK A — FINAL RESULT
+==========================================
+Cube start: [0.5   0.    0.025]
+Cube final: [0.4    0.2997 0.0251]
+Target: [0.4   0.3   0.025]
+
+XY error: 0.0003 m
+XYZ error: 0.0003 m
+Tolerance: 0.0800 m
+
+SUCCESS: True
+==========================================
+```
