@@ -43,7 +43,7 @@ ssh-keygen -t ed25519 -C "{github_email}"
 cat ~/.ssh/id_ed25519.pub
 ```
 - add this public key on github
-- ssh -T {github_email}
+- ssh -T git@github.com
 
 ## ROS2 install
 Ubuntu 22.04 Jammy
