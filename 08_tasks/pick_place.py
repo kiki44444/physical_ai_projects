@@ -1,6 +1,6 @@
 from omni.isaac.kit import SimulationApp
 
-simulation_app = SimulationApp({"headless": True})
+simulation_app = SimulationApp({"headless": False, "width": 1280, "height": 720})
 
 import numpy as np
 
@@ -13,23 +13,11 @@ from omni.isaac.franka import Franka
 from omni.isaac.franka.controllers import RMPFlowController
 
 
-# ============================================================
 # CONFIG
-# ============================================================
-
 CUBE_SIZE = 0.05
+CUBE_START = np.array([0.50, 0.00, CUBE_SIZE / 2.0])
 
-CUBE_START = np.array([
-    0.50,
-    0.00,
-    CUBE_SIZE / 2.0,
-])
-
-TARGET_POSITION = np.array([
-    0.40,
-    0.30,
-    CUBE_SIZE / 2.0,
-])
+TARGET_POSITION = np.array([0.40, 0.30, CUBE_SIZE / 2.0])
 
 # Calibrated successfully in previous test
 GRASP_TARGET_Z = 0.025
@@ -40,22 +28,11 @@ PRE_PLACE_Z = 0.25
 
 SUCCESS_TOLERANCE = 0.08
 
-
-# ============================================================
 # WORLD
-# ============================================================
-
-world = World(
-    stage_units_in_meters=1.0
-)
-
+world = World(stage_units_in_meters=1.0)
 world.scene.add_default_ground_plane()
 
-
-# ============================================================
 # FRANKA
-# ============================================================
-
 franka_url = (
     "http://omniverse-content-production.s3-us-west-2.amazonaws.com/"
     "Assets/Isaac/4.0/Isaac/Robots/Franka/franka.usd"
@@ -70,9 +47,7 @@ franka = world.scene.add(
 )
 
 
-# ============================================================
 # CUBE
-# ============================================================
 
 cube = world.scene.add(
     DynamicCuboid(
@@ -89,55 +64,35 @@ cube = world.scene.add(
 )
 
 
-# ============================================================
 # RESET
-# ============================================================
-
 world.reset()
 
+from omni.isaac.core.utils.viewports import set_camera_view
+
+set_camera_view(
+    eye=np.array([1.5, 1.5, 1.2]),
+    target=np.array([0.45, 0.15, 0.1]),
+    camera_prim_path="/OmniverseKit_Persp",
+)
+
 for _ in range(100):
-    world.step(render=False)
+    world.step(render=True)
 
-
-# ============================================================
 # HAND / FINGERS
-# ============================================================
+hand = XFormPrim(prim_path="/World/Franka/panda_hand")
+left_finger = XFormPrim(prim_path="/World/Franka/panda_leftfinger")
+right_finger = XFormPrim(prim_path="/World/Franka/panda_rightfinger")
 
-hand = XFormPrim(
-    prim_path="/World/Franka/panda_hand"
-)
-
-left_finger = XFormPrim(
-    prim_path="/World/Franka/panda_leftfinger"
-)
-
-right_finger = XFormPrim(
-    prim_path="/World/Franka/panda_rightfinger"
-)
-
-
-# ============================================================
 # RMPFLOW
-# ============================================================
-
 controller = RMPFlowController(
     name="franka_rmpflow_controller",
     robot_articulation=franka,
 )
 
-
-# ============================================================
 # ORIENTATION
-# ============================================================
-
 top_down_orientation = euler_angles_to_quat(
-    np.array([
-        0.0,
-        np.pi,
-        0.0,
-    ])
+    np.array([0.0, np.pi, 0.0])
 )
-
 
 print()
 print("==========================================")
@@ -173,10 +128,7 @@ print("==========================================")
 print()
 
 
-# ============================================================
 # HELPERS
-# ============================================================
-
 def get_finger_positions():
 
     left_pos, _ = (
@@ -215,10 +167,7 @@ def get_finger_separation():
     )
 
 
-# ============================================================
 # MOVE
-# ============================================================
-
 def move_to(
     target,
     steps=300,
@@ -239,7 +188,7 @@ def move_to(
         franka.apply_action(action)
 
         world.step(
-            render=False
+            render=True
         )
 
     center = get_gripper_center()
@@ -264,9 +213,7 @@ def move_to(
     )
 
 
-# ============================================================
 # GRIPPER
-# ============================================================
 
 def open_gripper(
     steps=200,
@@ -275,7 +222,7 @@ def open_gripper(
     franka.gripper.open()
 
     for _ in range(steps):
-        world.step(render=False)
+        world.step(render=True)
 
 
 def close_gripper(
@@ -285,7 +232,7 @@ def close_gripper(
     franka.gripper.close()
 
     for _ in range(steps):
-        world.step(render=False)
+        world.step(render=True)
 
 
 # ============================================================
@@ -473,7 +420,7 @@ move_to(
 
 
 for _ in range(100):
-    world.step(render=False)
+    world.step(render=True)
 
 
 cube_after_lift, _ = (
@@ -625,7 +572,7 @@ move_to(
 
 
 for _ in range(100):
-    world.step(render=False)
+    world.step(render=True)
 
 
 print_state(
@@ -756,7 +703,7 @@ move_to(
 
 
 for _ in range(100):
-    world.step(render=False)
+    world.step(render=True)
 
 
 print_state(
@@ -777,7 +724,7 @@ open_gripper(
 
 # Let cube settle
 for _ in range(300):
-    world.step(render=False)
+    world.step(render=True)
 
 
 cube_after_release, _ = (
@@ -815,7 +762,7 @@ move_to(
 
 
 for _ in range(200):
-    world.step(render=False)
+    world.step(render=True)
 
 
 # ============================================================
@@ -923,5 +870,10 @@ print(
 
 print()
 
+
+print("Task finished. GUI will remain open.")
+
+while simulation_app.is_running():
+    world.step(render=True)
 
 simulation_app.close()

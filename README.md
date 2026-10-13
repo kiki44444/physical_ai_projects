@@ -318,6 +318,10 @@ Current joints: [-0.   -0.5   0.2   0.3   1.    1.5   0.8   0.04  0.04]
 ```
 ### 4. pick a cube and place it in the target
 - tasks/pick_place.py
+- exeution
+```
+DISPLAY=:1 OMNI_KIT_ALLOW_ROOT=1 /isaac-sim/python.sh precise_placement.py
+```
 - trouble shooting
   - calibration problem
 - output
