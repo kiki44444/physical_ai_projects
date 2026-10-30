@@ -3,20 +3,7 @@
 - Cloud GPU from runpod
 - Task 1 ~ 10 : Issac sim 4.0 which is relatively low version. Since runpod only offers TCP, viewing the remote server screen was impossible because Issac streaming service requires UDP.
 - Task 11 ~ : Issac sim 6.1.0 (found another runpod template)
-  - enter server
-  - activate the conda virtual env
-    ```bash 
-    source /opt/conda/etc/profile.d/conda.sh
-    conda activate env_isaacsim
-    ```
-  - set the display
-    ```bash
-    export DISPLAY=:1
-    ```
-  - execute
-    ```bash
-    python {task}.py
-    ```
+
 ## Server setting up for Issac sim 4.0
 1. Create runpod server with the template beloew
    - From: https://github.com/Sa3d-99/runpod_noVNC_isaac_sim
@@ -134,6 +121,37 @@ source /opt/ros/humble/setup.bash
 cd ~/ros2_ws
 source install/setup.bash
 ```
+## Server settung for Isaac sim 6.1.0
+- run a pod with the template below:
+- enter server
+- Vscode connection
+  - ```
+    mkdir -p ~/.ssh
+    chmod 700 ~/.ssh
+    echo 'YOUR_PUBLIC_KEY' >> ~/.ssh/authorized_keys
+    # type your public key
+    chmod 600 ~/.ssh/authorized_keys
+    ```
+  - change the config of remote-ssh on your local vscode
+  - ex)
+  - ```
+    
+    ```
+  - ssh runpod # on your local machine terminal
+- (optinal) connect to Git
+- activate the conda virtual env
+  ```bash 
+  source /opt/conda/etc/profile.d/conda.sh
+  conda activate env_isaacsim
+  ```
+- set the display
+  ```bash
+  export DISPLAY=:1
+  ```
+- execute
+  ```bash
+  python {task}.py
+  ```
 
 # project #1: isaac-sim-learning
 ## Franka pandas
