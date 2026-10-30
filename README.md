@@ -17,7 +17,21 @@
     ```bash
     python {task}.py
     ```
-
+## Server setting up for Issac sim 4.0
+1. Create runpod server with the template beloew
+   - From: https://github.com/Sa3d-99/runpod_noVNC_isaac_sim
+2. Change the template container start command into
+```
+{
+  "entrypoint": ["bash", "-c"],
+  "cmd": ["curl -fsSL https://raw.githubusercontent.com/Sa3d-99/runpod_noVNC_isaac_sim/main/bootstrap.sh | bash; sleep infinity"]
+}
+```
+3. HTTP service (wait a bit .. )
+4. Access the server with SSH (not "SSH exposed to TCP")
+5. If you accidently exit the simulator in the server then, ```./isaac-sim.sh --allow-root```
+6. vscode + SSH setting
+   - control the server with your local machine through vscode
 ### vscode + SSH
 1. install remote SSH extension
 2. public key of mine
@@ -54,6 +68,7 @@ Host runpod
 ssh runpod # through terminal
 Remote-SSH -> Connect to Host -> runpod # through vscode
 ```
+7. Connect it to git to manage the repository
 ### Git SSH
 public key
 - generate a private/public key on the remote server
@@ -63,7 +78,7 @@ cat ~/.ssh/id_ed25519.pub
 ```
 - add this public key on github
 - ssh -T git@github.com
-
+8. install ROS2 humble
 ## ROS2 install
 Ubuntu 22.04 Jammy
 Isaac Sim 4.0 
@@ -118,32 +133,9 @@ ROS workspace
 source /opt/ros/humble/setup.bash
 cd ~/ros2_ws
 source install/setup.bash
-
-/opt/ros/humble/setup.bash
-        ↓
-ROS2 Humble 자체를 사용할 수 있게 함
-
-~/ros2_ws/install/setup.bash
-        ↓
-네가 만든 robot_control 같은 패키지를
-ROS2가 찾을 수 있게 함
 ```
+
 # project #1: isaac-sim-learning
-## cloud GPU: Runpod
-Create runpod server
-1. Get the runpod template for issac sim 4.0 GUI
-   - From: https://github.com/Sa3d-99/runpod_noVNC_isaac_sim
-2. Change the template container start command into
-```
-{
-  "entrypoint": ["bash", "-c"],
-  "cmd": ["curl -fsSL https://raw.githubusercontent.com/Sa3d-99/runpod_noVNC_isaac_sim/main/bootstrap.sh | bash; sleep infinity"]
-}
-```
-3. HTTP service (wait a bit .. )
-4. Access the server with SSH (not "SSH exposed to TCP")
-5. If you accidently exit the simulator in the server then, ```./isaac-sim.sh --allow-root```
-
 ## Franka pandas
 ### 1. Franka + ground plane + cube
 ### 2. stardalone python script (/workspace/main.py)
@@ -164,8 +156,8 @@ echo $DISPLAY
 # result :1
 /isaac-sim/python.sh /workspace/main.py
 ```
-### 3. Reading the current joint position
-- read_joint.py
+### 03. task1: Reading the current joint position
+- 01_read_joint.py
 ```python
 franka.get_joint_positions()
 ```
@@ -180,7 +172,8 @@ Joint positions:
 ```
 - dof: degree of freedom
 - units: joint = radian, finger_joing = m
-### 4. Move the joint position (Joint space)
+### 4. task2: Move the joint position (Joint space)
+02_move_joint.py
 ```python
 # move the joints
 from omni.isaac.core.utils.types import ArticulationAction
@@ -198,8 +191,8 @@ Actual: [-4.3578058e-12 -4.9997920e-01  3.6331871e-10 -2.0000052e+00
  -5.4580335e-07  1.5000017e+00  7.0000052e-01  3.9779279e-02
   3.9779294e-02]
 ```
-### 5. Cartesian space + IK solver
-- move_cartesian_01.py
+### 5. task3&4: Cartesian space + IK solver
+- 03_move_cartesian_01.py
 ```python
 from omni.isaac.franka import KinematicsSolver
 import numpy as np
@@ -234,7 +227,7 @@ IK action: {'joint_positions': [-0.2474887004383594, 0.9693817698293395, 0.81513
 Target: [0.5 0.4 0.1]
 Actual: [0.4646386  0.37809917 0.0922472 ]
 ```
-- move_cartesian_02.py
+- 04_move_cartesian_02.py
     - compute the target joint every simulation steps based on the current robot state
 ```python
 from omni.isaac.franka.controllers import RMPFlowController
@@ -263,7 +256,7 @@ Joint position: [ 0.16466147 -0.7054785   0.28579456 -2.478773    0.05316455  2.
 Gripper position: [0.37350965 0.20253271 0.53297734]
 ```
 
-### 6. Pick-and-place
+### 6. task5: Pick-and-place
 - 05_pick_and_place.py
 - output
 ```
@@ -291,7 +284,7 @@ Actual: [0.36543915 0.32712418 0.36237168]
 final cube position: [4.9999970e-01 4.2551530e-08 2.4999926e-02]
 ```
 ## ROS2
-### 1. publish
+### task6: publish
 - 06_ros2_publish.py
 - How to execute
   ```bash
@@ -309,7 +302,7 @@ ros2 topic list
 ros2 topic echo /joint_states
 ```
 
-### 3. command
+### task7: . command
 - 07_ros2_command.py
 - How to execute
 - ```
@@ -335,8 +328,8 @@ ros2 topic pub --once /joint_command sensor_msgs/msg/JointState "{position: [0.0
 ```
 Current joints: [-0.   -0.5   0.2   0.3   1.    1.5   0.8   0.04  0.04]
 ```
-### 4. pick a cube and place it in the target
-- tasks/pick_place.py
+### task8: pick a cube and place it in the target
+- 08_tasks/pick_place.py
 - exeution
 ```
 DISPLAY=:1 OMNI_KIT_ALLOW_ROOT=1 /isaac-sim/python.sh precise_placement.py
