@@ -1,10 +1,11 @@
 # physical_ai_projects
 ## GPU setting
 - Cloud GPU from runpod
-- Task 1 ~ 10 : Issac sim 4.0 which is relatively low version. Since runpod only offers TCP, viewing the remote server screen was impossible because Issac streaming service requires UDP.
-- Task 11 ~ : Issac sim 6.1.0 (found another runpod template)
+- Task 1 ~ 8 : Issac sim 4.0 which is relatively low version. Since runpod only offers TCP, viewing the remote server screen was impossible because Issac streaming service requires UDP.
+- Task 9 ~ : Issac sim 6.1.0 (found another runpod template)
+<details>
+<summary><strong>Server setting up for Issac sim 4.0</strong></summary>
 
-## Server setting up for Issac sim 4.0
 1. Create runpod server with the template beloew
    - From: https://github.com/Sa3d-99/runpod_noVNC_isaac_sim
 2. Change the template container start command into
@@ -121,7 +122,11 @@ source /opt/ros/humble/setup.bash
 cd ~/ros2_ws
 source install/setup.bash
 ```
-## Server settung for Isaac sim 6.1.0
+</details>
+
+<details>
+<summary><strong>Server settung for Isaac sim 6.1.0</strong></summary>
+
 - run a pod with the template below:
 - enter server
 - Vscode connection
@@ -152,6 +157,7 @@ source install/setup.bash
   ```bash
   python {task}.py
   ```
+</details>
 
 # project #1: isaac-sim-learning
 ## Franka pandas
