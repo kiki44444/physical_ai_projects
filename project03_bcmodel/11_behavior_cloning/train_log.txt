@@ -1,0 +1,60 @@
+Episodes: 12
+Observations: torch.Size([18942, 18])
+Actions: torch.Size([18942, 4])
+Moving train samples: 909
+Stationary train samples: 389
+Total train samples: 1298
+Stationary train ratio: 29.97%
+Validation samples: 2959
+Epoch 001/50 | Train: 0.91508 | Val: 0.71875
+Epoch 002/50 | Train: 0.89190 | Val: 0.70798
+Epoch 003/50 | Train: 0.87979 | Val: 0.69101
+Epoch 004/50 | Train: 0.86658 | Val: 0.66522
+Epoch 005/50 | Train: 0.85165 | Val: 0.61771
+Epoch 006/50 | Train: 0.83531 | Val: 0.58693
+Epoch 007/50 | Train: 0.81327 | Val: 0.58628
+Epoch 008/50 | Train: 0.78665 | Val: 0.56469
+Epoch 009/50 | Train: 0.76501 | Val: 0.51184
+Epoch 010/50 | Train: 0.74033 | Val: 0.48183
+Epoch 011/50 | Train: 0.70204 | Val: 0.47626
+Epoch 012/50 | Train: 0.66764 | Val: 0.43439
+Epoch 013/50 | Train: 0.62596 | Val: 0.41804
+Epoch 014/50 | Train: 0.59323 | Val: 0.43739
+Epoch 015/50 | Train: 0.55988 | Val: 0.41832
+Epoch 016/50 | Train: 0.52770 | Val: 0.38842
+Epoch 017/50 | Train: 0.48664 | Val: 0.40485
+Epoch 018/50 | Train: 0.45271 | Val: 0.39726
+Epoch 019/50 | Train: 0.41775 | Val: 0.39200
+Epoch 020/50 | Train: 0.38806 | Val: 0.37573
+Epoch 021/50 | Train: 0.35903 | Val: 0.37859
+Epoch 022/50 | Train: 0.33648 | Val: 0.39771
+Epoch 023/50 | Train: 0.31824 | Val: 0.34353
+Epoch 024/50 | Train: 0.29850 | Val: 0.43392
+Epoch 025/50 | Train: 0.28865 | Val: 0.33615
+Epoch 026/50 | Train: 0.27125 | Val: 0.40359
+Epoch 027/50 | Train: 0.25881 | Val: 0.31912
+Epoch 028/50 | Train: 0.25563 | Val: 0.43406
+Epoch 029/50 | Train: 0.24391 | Val: 0.32475
+Epoch 030/50 | Train: 0.24680 | Val: 0.35519
+Epoch 031/50 | Train: 0.22614 | Val: 0.37778
+Epoch 032/50 | Train: 0.21667 | Val: 0.32217
+Epoch 033/50 | Train: 0.22076 | Val: 0.36105
+Epoch 034/50 | Train: 0.21380 | Val: 0.40169
+Epoch 035/50 | Train: 0.19709 | Val: 0.32486
+Epoch 036/50 | Train: 0.20195 | Val: 0.33127
+Epoch 037/50 | Train: 0.18847 | Val: 0.38191
+Epoch 038/50 | Train: 0.18542 | Val: 0.38764
+Epoch 039/50 | Train: 0.18408 | Val: 0.39718
+Epoch 040/50 | Train: 0.17935 | Val: 0.34411
+Epoch 041/50 | Train: 0.17836 | Val: 0.37323
+Epoch 042/50 | Train: 0.17093 | Val: 0.35273
+Epoch 043/50 | Train: 0.16632 | Val: 0.34483
+Epoch 044/50 | Train: 0.16510 | Val: 0.37895
+Epoch 045/50 | Train: 0.15956 | Val: 0.32057
+Epoch 046/50 | Train: 0.15894 | Val: 0.35876
+Epoch 047/50 | Train: 0.15296 | Val: 0.34050
+Epoch 048/50 | Train: 0.15349 | Val: 0.35180
+Epoch 049/50 | Train: 0.15098 | Val: 0.36878
+Epoch 050/50 | Train: 0.15300 | Val: 0.34409
+Training complete!
+Best validation loss: 0.31911852134970164
