@@ -159,28 +159,8 @@ source install/setup.bash
   ```
 </details>
 
-# project #1: isaac-sim-learning
-## Franka pandas
-### 1. Franka + ground plane + cube
-### 2. stardalone python script (/workspace/main.py)
-- vi installation
-```bash
-apt update
-apt install -y vim
-```
-- execution
-```python
-/isaac-sim/python.sh /workspace/main.py
-```
-- Trouble shooting
-```bash
-# exit the GUI
-export DISPLAY=:1
-echo $DISPLAY
-# result :1
-/isaac-sim/python.sh /workspace/main.py
-```
-### 03. task1: Reading the current joint position
+# project #1: Franka pandas basics
+### task1: Reading the current joint position
 - 01_read_joint.py
 ```python
 franka.get_joint_positions()
@@ -196,14 +176,10 @@ Joint positions:
 ```
 - dof: degree of freedom
 - units: joint = radian, finger_joing = m
-### 4. task2: Move the joint position (Joint space)
+### task2: move the joint position (Joint space)
 02_move_joint.py
 ```python
 # move the joints
-from omni.isaac.core.utils.types import ArticulationAction
-import numpy as np
-
-# radian
 q = np.array([0.0, -0.5, 0.0, -2.0 , 0.0, 1.5, 0.7, 0.04, 0.04])
 action = ArticulationAction(joint_positions=q)
 franka.apply_action(action)
@@ -215,34 +191,12 @@ Actual: [-4.3578058e-12 -4.9997920e-01  3.6331871e-10 -2.0000052e+00
  -5.4580335e-07  1.5000017e+00  7.0000052e-01  3.9779279e-02
   3.9779294e-02]
 ```
-### 5. task3&4: Cartesian space + IK solver
+### task3&4: Cartesian space + IK solver
 - 03_move_cartesian_01.py
 ```python
-from omni.isaac.franka import KinematicsSolver
-import numpy as np
-
 ik_solver = KinematicsSolver(franka)
-
 target = np.array([0.5, 0.4, 0.1])
-
 action, success = ik_solver.compute_inverse_kinematics(target_position=target)
-
-print(f"IK success : {success}")
-print(f"IK action: {action}")
-
-if success:
-    franka.apply_action(action)
-    for _ in range(500):
-        world.step(render=False)
-
-    actual_pos, actual_ori = (
-        franka.end_effector.get_world_pose()
-    )
-
-    print(f"Target:", target)
-    print(f"Actual:", actual_pos)
-
-simulation_app.close()
 ```
 - output
 ```python
@@ -254,24 +208,14 @@ Actual: [0.4646386  0.37809917 0.0922472 ]
 - 04_move_cartesian_02.py
     - compute the target joint every simulation steps based on the current robot state
 ```python
-from omni.isaac.franka.controllers import RMPFlowController
-import numpy as np
-
 controller = RMPFlowController(name="franka_rmpflow_controller",
     robot_articulation=franka)
-
 # target gripper coordinate (x, y, z)
 target = np.array([0.4, 0.2, 0.5])
-
 for _ in range(500):
     action = controller.forward(target_end_effector_position=target)
     franka.apply_action(action)
     world.step(render=False)
-
-print(f"joint pos: {franka.get_joint_positions()}")
-print(f"gripper pos: {franka.end_effector.get_world_pose()[0]}")
-
-simulation_app.close()
 ```
 - output
 ```bash
@@ -280,34 +224,11 @@ Joint position: [ 0.16466147 -0.7054785   0.28579456 -2.478773    0.05316455  2.
 Gripper position: [0.37350965 0.20253271 0.53297734]
 ```
 
-### 6. task5: Pick-and-place
+### task5: Pick-and-place
 - 05_pick_and_place.py
 - output
-```
-pre grap
-Target: [0.5   0.    0.225]
-Actual: [0.49524176 0.00759575 0.2664331 ]
-descend
-Target: [0.5   0.    0.075]
-Actual: [0.5040984  0.00759774 0.11650084]
-close gripper
-lift
-Target: [0.5   0.    0.325]
-Actual: [ 4.8856360e-01 -9.2720074e-06  3.6509696e-01]
-Cube position after lift [4.9999970e-01 4.2551530e-08 2.4999926e-02]
- move to target
-Target: [0.4   0.3   0.325]
-Actual: [0.38934413 0.29515666 0.3650151 ]
-lower
-Target: [0.4   0.3   0.075]
-Actual: [0.40588713 0.2989509  0.11627045]
-open gripper
-retreat
-Target: [0.4   0.3   0.325]
-Actual: [0.36543915 0.32712418 0.36237168]
-final cube position: [4.9999970e-01 4.2551530e-08 2.4999926e-02]
-```
-## ROS2
+
+# project #2: ROS2
 ### task6: publish
 - 06_ros2_publish.py
 - How to execute
@@ -360,115 +281,8 @@ DISPLAY=:1 OMNI_KIT_ALLOW_ROOT=1 /isaac-sim/python.sh precise_placement.py
 ```
 - trouble shooting
   - calibration problem
-- output
 ```
-==========================================
-TASK A — PICK & PLACE
-==========================================
-Requested orientation: [0. 0. 1. 0.]
-EE prim: /World/Franka/panda_rightfinger
-Cube start: [0.5   0.    0.025]
-Target: [0.4   0.3   0.025]
-Calibrated grasp Z: 0.025
-==========================================
-
-[0] OPEN GRIPPER
-Finger separation: 0.0800 m
-
-[1] PRE-GRASP
-  RMPFlow target: [0.5 0.  0.2]
-  Gripper center: [0.4999 0.     0.2417]
-  XY error: 0.0001 m
-
-[2] DESCEND
-  RMPFlow target: [0.5   0.    0.025]
-  Gripper center: [ 0.5    -0.      0.0667]
-  XY error: 0.0000 m
-
-------------------------------------------
-BEFORE GRASP
-Cube: [0.5   0.    0.025]
-Gripper center: [ 0.5    -0.      0.0667]
-Finger separation: 0.0800 m
-Center - cube: [-0.     -0.      0.0417]
-------------------------------------------
-
-[3] CLOSE GRIPPER
-
-------------------------------------------
-AFTER GRASP
-Cube: [0.5   0.    0.025]
-Gripper center: [0.5    0.     0.0667]
-Finger separation: 0.0506 m
-Center - cube: [-0.      0.      0.0417]
-------------------------------------------
-
-Closed finger separation: 0.0506 m
-
-[4] LIFT
-  RMPFlow target: [0.5  0.   0.25]
-  Gripper center: [ 4.999e-01 -2.000e-04  2.917e-01]
-  XY error: 0.0003 m
-Cube before lift: [0.5   0.    0.025]
-Cube after lift: [ 4.999e-01 -4.000e-04  2.500e-01]
-Vertical lift: 0.2250 m
-
->>> GRASP CONFIRMED <<<
-
-==========================================
-MEASURED GRASP OFFSET
-==========================================
-Gripper center: [ 4.999e-01 -2.000e-04  2.917e-01]
-Cube: [ 4.999e-01 -4.000e-04  2.500e-01]
-Cube - gripper: [ 1.00e-04 -1.00e-04 -4.17e-02]
-==========================================
-
-[5] MOVE ABOVE TARGET
-  RMPFlow target: [0.4  0.3  0.25]
-  Gripper center: [0.3965 0.3043 0.2917]
-  XY error: 0.0055 m
-
-------------------------------------------
-ABOVE TARGET
-Cube: [0.3966 0.3042 0.2499]
-Gripper center: [0.3965 0.3043 0.2917]
-Finger separation: 0.0506 m
-Center - cube: [-0.00e+00  1.00e-04  4.17e-02]
-------------------------------------------
-
-
-==========================================
-PLACE HEIGHT CALCULATION
-==========================================
-Controller → center Z offset: 0.0417 m
-Cube → gripper relative Z: -0.0417 m
-Desired cube center Z: 0.0250 m
-Desired gripper center Z: 0.0667 m
-Calculated RMPFlow place Z: 0.0251 m
-==========================================
-
-[6] LOWER TO PLACE
-  RMPFlow target: [0.4    0.3    0.0251]
-  Gripper center: [0.4    0.3    0.0668]
-  XY error: 0.0000 m
-
-------------------------------------------
-BEFORE RELEASE
-Cube: [0.4    0.2997 0.0251]
-Gripper center: [0.4    0.3    0.0668]
-Finger separation: 0.0506 m
-Center - cube: [-0.      0.0002  0.0417]
-------------------------------------------
-
-[7] RELEASE
-Cube after release: [0.4    0.2997 0.0251]
-
-[8] RETREAT
-  RMPFlow target: [0.4  0.3  0.25]
-  Gripper center: [0.3965 0.3044 0.2917]
-  XY error: 0.0056 m
-
-
+...
 ==========================================
 TASK A — FINAL RESULT
 ==========================================
@@ -483,3 +297,30 @@ Tolerance: 0.0800 m
 SUCCESS: True
 ==========================================
 ```
+
+# project #3: Behavior cloining model
+```text
+physical_ai_projects/
+├── 09_teleoperation/          # Control Franka Panda via ROS 2
+├── 10_recoder/                # Collect and save demonstrations
+│   ├── keyboard_control.py
+│   ├── record_demonstrations.py
+│   └── demonstrations/       # Recorded episodes (.npz)
+│
+├── 11_behavior_cloning/       # Train and evaluate a BC policy
+│   ├── dataset.py
+│   ├── chekc_dataset.py
+│   ├── model.py
+│   ├── train.py
+│   └── evaluate.py
+│
+└── README.md
+```
+### task 9. Teleoperation
+Implemented keyboard based teleoperation of a Franka Panda robot using ROS 2 and Isaac Sim.
+### task 10. Demonstration Data 
+Collected robot demonstrations, including joint states, end-effector positions, object positions, and control actions.
+### task 11. Behavior cloning
+Implemented and trained an MLP behavior cloning policy using PyTorch, and evaluated it in Isaac Sim.
+
+# Project #4: Vision-Based Robot Learning
