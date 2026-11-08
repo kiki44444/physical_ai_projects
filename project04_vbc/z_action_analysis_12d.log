@@ -1,0 +1,28 @@
+[MODEL] checkpoint=vision_bc_12d_new.pt device=cuda scale=100.0
+[FRAMES] 180..309 (130 frames)
+[TOTAL] expert cumulative dz=-0.10000m; BC cumulative dz=+0.06740m
+[ERROR] Z MAE=0.002010m; mean bias=+0.001288m
+
+Frame range  | Expert sum dz | BC sum dz | Expert neg/zero/pos | BC neg/zero/pos
+ 180..249  | -0.04000m     | +0.07655m |             4/66/0 |            10/0/60
+ 250..308  | -0.06000m     | -0.00986m |             6/53/0 |            26/0/33
+ 309..309  | +0.00000m     | +0.00072m |              0/1/0 |              0/0/1
+ 180..309  | -0.10000m     | +0.06740m |           10/120/0 |            36/0/94
+
+[SELECTED FRAMES]
+180: expert=+0.00000 predicted=+0.00099 cumulative_expert=+0.00000 cumulative_BC=+0.00099
+200: expert=+0.00000 predicted=+0.00099 cumulative_expert=+0.00000 cumulative_BC=+0.02898
+220: expert=+0.00000 predicted=+0.00185 cumulative_expert=+0.00000 cumulative_BC=+0.07380
+240: expert=+0.00000 predicted=-0.00097 cumulative_expert=-0.01000 cumulative_BC=+0.10565
+250: expert=+0.00000 predicted=-0.00455 cumulative_expert=-0.04000 cumulative_BC=+0.07200
+260: expert=+0.00000 predicted=-0.00053 cumulative_expert=-0.07000 cumulative_BC=+0.04595
+270: expert=+0.00000 predicted=-0.00065 cumulative_expert=-0.08000 cumulative_BC=+0.04291
+275: expert=-0.01000 predicted=-0.00180 cumulative_expert=-0.09000 cumulative_BC=+0.04049
+280: expert=+0.00000 predicted=-0.00017 cumulative_expert=-0.10000 cumulative_BC=+0.03657
+290: expert=+0.00000 predicted=+0.00121 cumulative_expert=-0.10000 cumulative_BC=+0.04950
+300: expert=+0.00000 predicted=+0.00101 cumulative_expert=-0.10000 cumulative_BC=+0.06006
+305: expert=+0.00000 predicted=+0.00080 cumulative_expert=-0.10000 cumulative_BC=+0.06452
+309: expert=+0.00000 predicted=+0.00072 cumulative_expert=-0.10000 cumulative_BC=+0.06740
+
+[SAVED] /root/Desktop/physical_ai_projects/project04_vbc/z_action_comparison_12d.csv
+[NOTE] BC cumulative sum is a teacher-forced diagnostic on expert observations, not an actual closed-loop rollout.

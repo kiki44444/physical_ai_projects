@@ -19,6 +19,7 @@ from dataset import VisionDataset
 from vbc_model import VisionBehaviorCloning
 
 
+
 def compute_loss(
     pred_delta,
     pred_grip,
@@ -26,27 +27,55 @@ def compute_loss(
     position_scale,
     moving_weight,
     closed_weight,
+    z_down_weight=3.0,
 ):
     # Position targets: metres -> centimetres
     target_delta = actions[:, :3] * position_scale
 
-    # Detect moving frames in original metre units
-    moving = torch.linalg.norm(actions[:, :3], dim=1) > 1e-6
+    # Moving frames
+    moving = torch.linalg.norm(
+        actions[:, :3], dim=1
+    ) > 1e-6
 
     pos_weights = torch.where(
         moving,
-        torch.full_like(moving, moving_weight, dtype=target_delta.dtype),
-        torch.ones_like(moving, dtype=target_delta.dtype),
+        torch.full_like(
+            actions[:, 0], moving_weight
+        ),
+        torch.ones_like(actions[:, 0]),
     )
 
-    # Per-sample MSE, averaged across X/Y/Z
-    pos_per_sample = F.mse_loss(
+    # Squared error for X, Y, Z
+    position_error = F.mse_loss(
         pred_delta,
         target_delta,
         reduction="none",
+    )
+
+    # Additional weight for downward Z actions
+    z_down = actions[:, 2] < -1e-6
+
+    z_weights = torch.where(
+        z_down,
+        torch.full_like(actions[:, 2], z_down_weight),
+        torch.ones_like(actions[:, 2]),
+    )
+
+    # Only Z dimension receives extra weighting
+    xyz_weights = torch.stack(
+        (
+            torch.ones_like(z_weights),
+            torch.ones_like(z_weights),
+            z_weights,
+        ),
+        dim=1,
+    )
+
+    pos_per_sample = (
+        position_error * xyz_weights
     ).mean(dim=1)
 
-    # Normalize by total sample weights
+    # Preserve original moving-weight normalization
     pos_loss = (
         pos_weights * pos_per_sample
     ).sum() / pos_weights.sum()
@@ -60,7 +89,6 @@ def compute_loss(
         reduction="none",
     )
 
-    # Closed frames receive higher weight
     grip_weights = torch.where(
         grip_target < 0.5,
         torch.full_like(grip_target, closed_weight),
@@ -74,6 +102,7 @@ def compute_loss(
     total_loss = pos_loss + grip_loss
 
     return total_loss, pos_loss, grip_loss
+
 
 
 def main():
@@ -118,10 +147,19 @@ def main():
         default=2.0,
         help="Weight for closed-gripper frames.",
     )
-
+    parser.add_argument(
+        "--z-down-weight",
+        type=float,
+        default=3.0,
+        help="Extra weight for negative Z actions."
+    )
     args = parser.parse_args()
 
-    if args.moving_weight <= 0 or args.closed_weight <= 0:
+    if (
+        args.moving_weight <= 0
+        or args.closed_weight <= 0
+        or args.z_down_weight <= 0
+    ):
         parser.error("Loss weights must be positive.")
 
     torch.manual_seed(42)
@@ -143,7 +181,7 @@ def main():
     )
 
     model = VisionBehaviorCloning(
-        state_dim=10,
+        state_dim=12,
         pretrained=True,
         freeze_backbone=True,
     ).to(device)
@@ -223,6 +261,7 @@ def main():
                 position_scale=position_scale,
                 moving_weight=args.moving_weight,
                 closed_weight=args.closed_weight,
+                z_down_weight=args.z_down_weight,
             )
 
             optimizer.zero_grad(set_to_none=True)
@@ -263,6 +302,7 @@ def main():
             "training_samples": len(dataset),
             "moving_weight": args.moving_weight,
             "closed_weight": args.closed_weight,
+            "z_down_weight": args.z_down_weight,
         },
         output,
     )

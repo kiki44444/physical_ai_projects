@@ -27,7 +27,7 @@ checkpoint = torch.load(
 )
 
 model = VisionBehaviorCloning(
-    state_dim=10,
+    state_dim=12,
     pretrained=False,
     freeze_backbone=True,
 ).to(device)

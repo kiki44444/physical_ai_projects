@@ -1,0 +1,120 @@
+Loaded 397 frames from 1 episodes
+Moving frames: 18.4%; gripper-open labels: 46.9%
+============================================================
+Visual Behavior Cloning — Sanity Training
+============================================================
+Device:         cuda
+Samples:        397
+Epochs:         100
+Batch size:     16
+Learning rate:  0.001
+Position scale: 100.0
+Moving weight:  5.0
+Closed weight:  2.0
+Output:         vision_bc_12d_new.pt
+============================================================
+[DATA] Moving=73 Stationary=324
+[DATA] Open=186 Closed=211
+Epoch 001/100 | loss=0.79006 | position=0.19107 | gripper=0.59899
+Epoch 002/100 | loss=0.68790 | position=0.16251 | gripper=0.52539
+Epoch 003/100 | loss=0.53248 | position=0.15760 | gripper=0.37488
+Epoch 004/100 | loss=0.35811 | position=0.13473 | gripper=0.22338
+Epoch 005/100 | loss=0.28440 | position=0.12205 | gripper=0.16235
+Epoch 006/100 | loss=0.26700 | position=0.11152 | gripper=0.15548
+Epoch 007/100 | loss=0.22758 | position=0.10171 | gripper=0.12587
+Epoch 008/100 | loss=0.17484 | position=0.09821 | gripper=0.07663
+Epoch 009/100 | loss=0.16782 | position=0.10364 | gripper=0.06418
+Epoch 010/100 | loss=0.14129 | position=0.08636 | gripper=0.05494
+Epoch 011/100 | loss=0.13223 | position=0.07996 | gripper=0.05227
+Epoch 012/100 | loss=0.12811 | position=0.08583 | gripper=0.04228
+Epoch 013/100 | loss=0.12141 | position=0.08608 | gripper=0.03533
+Epoch 014/100 | loss=0.20893 | position=0.10478 | gripper=0.10415
+Epoch 015/100 | loss=0.18762 | position=0.08708 | gripper=0.10054
+Epoch 016/100 | loss=0.14597 | position=0.08550 | gripper=0.06047
+Epoch 017/100 | loss=0.11456 | position=0.07552 | gripper=0.03904
+Epoch 018/100 | loss=0.12482 | position=0.08225 | gripper=0.04257
+Epoch 019/100 | loss=0.11346 | position=0.07889 | gripper=0.03458
+Epoch 020/100 | loss=0.11824 | position=0.08310 | gripper=0.03514
+Epoch 021/100 | loss=0.12402 | position=0.07664 | gripper=0.04738
+Epoch 022/100 | loss=0.25102 | position=0.09215 | gripper=0.15886
+Epoch 023/100 | loss=0.13637 | position=0.07968 | gripper=0.05668
+Epoch 024/100 | loss=0.11503 | position=0.08121 | gripper=0.03381
+Epoch 025/100 | loss=0.12817 | position=0.08791 | gripper=0.04027
+Epoch 026/100 | loss=0.11237 | position=0.07441 | gripper=0.03797
+Epoch 027/100 | loss=0.09826 | position=0.06978 | gripper=0.02848
+Epoch 028/100 | loss=0.10636 | position=0.07558 | gripper=0.03079
+Epoch 029/100 | loss=0.10379 | position=0.07705 | gripper=0.02674
+Epoch 030/100 | loss=0.11016 | position=0.07499 | gripper=0.03516
+Epoch 031/100 | loss=0.12421 | position=0.07697 | gripper=0.04724
+Epoch 032/100 | loss=0.14507 | position=0.08955 | gripper=0.05552
+Epoch 033/100 | loss=0.10062 | position=0.07414 | gripper=0.02648
+Epoch 034/100 | loss=0.09967 | position=0.06983 | gripper=0.02983
+Epoch 035/100 | loss=0.11225 | position=0.07112 | gripper=0.04114
+Epoch 036/100 | loss=0.11620 | position=0.06920 | gripper=0.04700
+Epoch 037/100 | loss=0.10412 | position=0.07290 | gripper=0.03122
+Epoch 038/100 | loss=0.10836 | position=0.07002 | gripper=0.03835
+Epoch 039/100 | loss=0.09520 | position=0.07176 | gripper=0.02344
+Epoch 040/100 | loss=0.09655 | position=0.06751 | gripper=0.02904
+Epoch 041/100 | loss=0.10106 | position=0.06834 | gripper=0.03272
+Epoch 042/100 | loss=0.09811 | position=0.06935 | gripper=0.02876
+Epoch 043/100 | loss=0.11531 | position=0.07435 | gripper=0.04096
+Epoch 044/100 | loss=0.10202 | position=0.07033 | gripper=0.03168
+Epoch 045/100 | loss=0.09346 | position=0.06729 | gripper=0.02617
+Epoch 046/100 | loss=0.10884 | position=0.06662 | gripper=0.04222
+Epoch 047/100 | loss=0.09368 | position=0.06882 | gripper=0.02486
+Epoch 048/100 | loss=0.10257 | position=0.06898 | gripper=0.03360
+Epoch 049/100 | loss=0.10064 | position=0.06794 | gripper=0.03271
+Epoch 050/100 | loss=0.09687 | position=0.06465 | gripper=0.03222
+Epoch 051/100 | loss=0.09661 | position=0.06889 | gripper=0.02772
+Epoch 052/100 | loss=0.09688 | position=0.07004 | gripper=0.02684
+Epoch 053/100 | loss=0.10327 | position=0.07197 | gripper=0.03129
+Epoch 054/100 | loss=0.09873 | position=0.06646 | gripper=0.03227
+Epoch 055/100 | loss=0.09090 | position=0.06568 | gripper=0.02522
+Epoch 056/100 | loss=0.10774 | position=0.07384 | gripper=0.03391
+Epoch 057/100 | loss=0.12120 | position=0.07847 | gripper=0.04273
+Epoch 058/100 | loss=0.09451 | position=0.06626 | gripper=0.02826
+Epoch 059/100 | loss=0.09781 | position=0.06325 | gripper=0.03456
+Epoch 060/100 | loss=0.09741 | position=0.06537 | gripper=0.03204
+Epoch 061/100 | loss=0.08469 | position=0.06006 | gripper=0.02463
+Epoch 062/100 | loss=0.09209 | position=0.06514 | gripper=0.02694
+Epoch 063/100 | loss=0.08715 | position=0.06712 | gripper=0.02003
+Epoch 064/100 | loss=0.09834 | position=0.06602 | gripper=0.03232
+Epoch 065/100 | loss=0.12649 | position=0.07885 | gripper=0.04764
+Epoch 066/100 | loss=0.10021 | position=0.07616 | gripper=0.02404
+Epoch 067/100 | loss=0.09597 | position=0.06609 | gripper=0.02988
+Epoch 068/100 | loss=0.09370 | position=0.07071 | gripper=0.02299
+Epoch 069/100 | loss=0.09561 | position=0.07038 | gripper=0.02524
+Epoch 070/100 | loss=0.10750 | position=0.06803 | gripper=0.03947
+Epoch 071/100 | loss=0.09524 | position=0.07488 | gripper=0.02036
+Epoch 072/100 | loss=0.08414 | position=0.06163 | gripper=0.02251
+Epoch 073/100 | loss=0.10796 | position=0.06411 | gripper=0.04385
+Epoch 074/100 | loss=0.09368 | position=0.06872 | gripper=0.02497
+Epoch 075/100 | loss=0.11501 | position=0.06806 | gripper=0.04695
+Epoch 076/100 | loss=0.10299 | position=0.06460 | gripper=0.03839
+Epoch 077/100 | loss=0.09110 | position=0.06313 | gripper=0.02797
+Epoch 078/100 | loss=0.09044 | position=0.06352 | gripper=0.02692
+Epoch 079/100 | loss=0.08329 | position=0.06189 | gripper=0.02140
+Epoch 080/100 | loss=0.08159 | position=0.05697 | gripper=0.02462
+Epoch 081/100 | loss=0.08233 | position=0.06139 | gripper=0.02094
+Epoch 082/100 | loss=0.07893 | position=0.05839 | gripper=0.02054
+Epoch 083/100 | loss=0.08644 | position=0.06042 | gripper=0.02602
+Epoch 084/100 | loss=0.13023 | position=0.06788 | gripper=0.06235
+Epoch 085/100 | loss=0.10527 | position=0.07333 | gripper=0.03194
+Epoch 086/100 | loss=0.07566 | position=0.05992 | gripper=0.01574
+Epoch 087/100 | loss=0.08023 | position=0.06201 | gripper=0.01822
+Epoch 088/100 | loss=0.09563 | position=0.06087 | gripper=0.03476
+Epoch 089/100 | loss=0.09604 | position=0.06554 | gripper=0.03050
+Epoch 090/100 | loss=0.08855 | position=0.06254 | gripper=0.02601
+Epoch 091/100 | loss=0.09908 | position=0.06123 | gripper=0.03785
+Epoch 092/100 | loss=0.09345 | position=0.06139 | gripper=0.03206
+Epoch 093/100 | loss=0.09815 | position=0.06734 | gripper=0.03081
+Epoch 094/100 | loss=0.10825 | position=0.06836 | gripper=0.03989
+Epoch 095/100 | loss=0.09566 | position=0.06808 | gripper=0.02759
+Epoch 096/100 | loss=0.09374 | position=0.06557 | gripper=0.02817
+Epoch 097/100 | loss=0.08966 | position=0.06344 | gripper=0.02622
+Epoch 098/100 | loss=0.08501 | position=0.06080 | gripper=0.02421
+Epoch 099/100 | loss=0.08044 | position=0.05888 | gripper=0.02156
+Epoch 100/100 | loss=0.08655 | position=0.06383 | gripper=0.02272
+
+[SAVED] vision_bc_12d_new.pt
+[NOTE] Training loss alone does not establish closed-loop success or generalization.

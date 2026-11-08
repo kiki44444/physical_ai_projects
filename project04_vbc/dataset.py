@@ -21,18 +21,18 @@ class VisionDataset(Dataset):
                 n = len(d["rgb"])
                 state = np.concatenate(
                     (
-                        d["joint_positions"][:, :7],
-                        d["ee_position"],
+                        d["joint_positions"].astype(np.float32), # 9D
+                        d["ee_position"].astype(np.float32), # 3D
                     ),
                     axis=1,
-                ).astype(np.float32)
+                )
 
-                assert state.shape[1] == 10
+                assert state.shape == (n, 12)
                 action = np.concatenate((
                     d["action_delta"].astype(np.float32),
                     d["gripper_open"].astype(np.float32).reshape(-1, 1),
                 ), axis=1)
-                if d["rgb"].shape != (n, 224, 224, 3) or state.shape != (n, 10) or action.shape != (n, 4):
+                if d["rgb"].shape != (n, 224, 224, 3) or state.shape != (n, 12) or action.shape != (n, 4):
                     raise ValueError(f"Unexpected shapes in {file}: rgb={d['rgb'].shape}, state={state.shape}, action={action.shape}")
                 if not np.isfinite(state).all() or not np.isfinite(action).all():
                     raise ValueError(f"Nonfinite values in {file}")

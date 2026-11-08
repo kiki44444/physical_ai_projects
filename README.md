@@ -157,6 +157,93 @@ source install/setup.bash
   ```bash
   python {task}.py
   ```
+### Troubleshooting: TorchVision Import Error (Isaac Sim 6.1)
+
+**Problem**
+
+After restarting the RunPod environment, the Isaac Sim script terminated during the `torchvision` import.
+
+```text
+RuntimeError: operator torchvision::nms does not exist
+```
+
+**Environment**
+- PyTorch: `2.11.0+cu128`
+- TorchVision: `0.26.0`
+- TorchAudio: `2.11.0`
+- Python: `3.12`
+
+**Cause**
+
+The TorchVision C++ operators were not properly registered, likely due to an incompatible or incorrectly installed binary.
+
+**Fix**
+
+Reinstall TorchVision using the CUDA 12.8 wheel index without modifying PyTorch:
+
+```bash
+python -m pip uninstall -y torchvision
+
+python -m pip install --no-deps --no-cache-dir \
+    torchvision==0.26.0 \
+    --index-url https://download.pytorch.org/whl/cu128
+```
+
+**Verification**
+
+```bash
+python -c "
+import torch
+import torchvision
+from torchvision.models import ResNet18_Weights
+
+print('Torch:', torch.__version__)
+print('TorchVision:', torchvision.__version__)
+print('NMS:', hasattr(torch.ops.torchvision, 'nms'))
+"
+```
+
+Expected result:
+
+```text
+NMS: True
+```
+
+**Note:** The reinstall command is a proposed fix; successful resolution has not yet been verified. If the error persists, inspect the TorchVision C++ extension loading errors.
+
+
+## Troubleshooting: ROS 2 Keyboard Controller
+
+### Issue: `ModuleNotFoundError: No module named 'rclpy._rclpy_pybind11'`
+
+**Cause:** Python version mismatch:
+- Isaac Sim Conda environment: Python 3.12
+- ROS 2 Humble: Python 3.10
+
+**Solution:** Run the keyboard controller using system Python 3.10 instead of Conda Python.
+
+**Terminal 1 — Isaac Sim Recorder**
+```bash
+conda activate env_isaacsim
+cd ~/Desktop/physical_ai_projects/project04_vbc
+DISPLAY=:1 OMNI_KIT_ALLOW_ROOT=1 python record_demonstration.py
+```
+
+**Terminal 2 — ROS 2 Keyboard Controller**
+```bash
+conda deactivate
+source /opt/ros/humble/setup.bash
+cd ~/Desktop/physical_ai_projects/project03_bcmodel/10_recoder
+/usr/bin/python3 keyboard_control.py
+```
+
+**Verify ROS 2 installation:**
+```bash
+/usr/bin/python3 -c "import rclpy; print('ROS 2 OK')"
+```
+
+**Note:** Keep both terminals running. Keyboard commands must be entered in Terminal 2.
+
 </details>
 
 # project #1: Franka pandas basics
