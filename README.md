@@ -127,45 +127,34 @@ source install/setup.bash
 <details>
 <summary><strong>Server settung for Isaac sim 6.1.0</strong></summary>
 
-- run a pod with the template below:
-- enter server
-- Vscode connection
-  - ```
-    mkdir -p ~/.ssh
-    chmod 700 ~/.ssh
-    echo 'YOUR_PUBLIC_KEY' >> ~/.ssh/authorized_keys
-    # type your public key
-    chmod 600 ~/.ssh/authorized_keys
-    ```
-  - change the config of remote-ssh on your local vscode
-  - ex)
-  - ```
-    
-    ```
-  - ssh runpod # on your local machine terminal
-- (optinal) connect to Git
-- activate the conda virtual env
+1. run a pod with the template: isaac-sim-6.1.0
+2. enter server
+3. vscode connection
+  ```bash
+  mkdir -p ~/.ssh
+  chmod 700 ~/.ssh
+  echo 'YOUR_PUBLIC_KEY' >> ~/.ssh/authorized_keys
+  chmod 600 ~/.ssh/authorized_keys
+
+  # change the config of remote-ssh on your local vscode
+
+  ssh runpod # on your local machine terminal
+  ```
+4. (optinal) connect to Git
+5. activate the conda virtual env
   ```bash 
   source /opt/conda/etc/profile.d/conda.sh
   conda activate env_isaacsim
-  ```
-- set the display
-  ```bash
+  # set the display
   export DISPLAY=:1
-  ```
-- execute
-  ```bash
+  # execute
   python {task}.py
   ```
-### Troubleshooting: TorchVision Import Error (Isaac Sim 6.1)
+### Troubleshooting #1 : TorchVision Import Error
 
 **Problem**
 
 After restarting the RunPod environment, the Isaac Sim script terminated during the `torchvision` import.
-
-```text
-RuntimeError: operator torchvision::nms does not exist
-```
 
 **Environment**
 - PyTorch: `2.11.0+cu128`
@@ -209,18 +198,18 @@ Expected result:
 NMS: True
 ```
 
-**Note:** The reinstall command is a proposed fix; successful resolution has not yet been verified. If the error persists, inspect the TorchVision C++ extension loading errors.
+### Troubleshooting #2: ROS 2 Keyboard Controller
 
+**Problem**
+`ModuleNotFoundError: No module named 'rclpy._rclpy_pybind11'`
 
-## Troubleshooting: ROS 2 Keyboard Controller
-
-### Issue: `ModuleNotFoundError: No module named 'rclpy._rclpy_pybind11'`
-
-**Cause:** Python version mismatch:
+**Cause:**
+Python version mismatch:
 - Isaac Sim Conda environment: Python 3.12
 - ROS 2 Humble: Python 3.10
 
-**Solution:** Run the keyboard controller using system Python 3.10 instead of Conda Python.
+**Solution:**
+Run the keyboard controller using system Python 3.10 instead of Conda Python.
 
 **Terminal 1 — Isaac Sim Recorder**
 ```bash
@@ -241,9 +230,6 @@ cd ~/Desktop/physical_ai_projects/project03_bcmodel/10_recoder
 ```bash
 /usr/bin/python3 -c "import rclpy; print('ROS 2 OK')"
 ```
-
-**Note:** Keep both terminals running. Keyboard commands must be entered in Terminal 2.
-
 </details>
 
 # project #1: Franka pandas basics
